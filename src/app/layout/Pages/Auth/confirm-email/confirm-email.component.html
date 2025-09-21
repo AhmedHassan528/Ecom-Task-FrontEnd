@@ -1,0 +1,38 @@
+<div class="confirm-email-container">
+  <div class="card">
+    <div class="card-header">
+      <h2>Email Confirmation</h2>
+    </div>
+    
+    <div class="card-body">
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Confirming your email...</p>
+      </div>
+
+      <!-- Success State -->
+      <div *ngIf="isConfirmed && !isLoading" class="success-state">
+        <div class="success-icon">✓</div>
+        <h3>Email Confirmed Successfully!</h3>
+        <p>{{ successMessage }}</p>
+        <div class="countdown">
+          <p>Redirecting to login page in <span class="countdown-number">3</span> seconds...</p>
+        </div>
+        <button class="btn btn-primary" (click)="goToLogin()">
+          Go to Login Now
+        </button>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="errorMessage && !isLoading" class="error-state">
+        <div class="error-icon">✗</div>
+        <h3>Confirmation Failed</h3>
+        <p>{{ errorMessage }}</p>
+        <button class="btn btn-secondary" (click)="goToLogin()">
+          Go to Login
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

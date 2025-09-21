@@ -1,0 +1,288 @@
+<div class="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-gradient-to-br from-slate-50 to-gray-100">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="text-center">
+      <div class="mx-auto h-16 w-16 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center mb-6">
+        <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+        </svg>
+      </div>
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">Create your account</h2>
+      <p class="text-gray-600">Join us today and get started</p>
+    </div>
+  </div>
+
+  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="bg-white py-8 px-6 shadow-xl rounded-2xl border border-gray-100">
+      <!-- Success Message -->
+      <div *ngIf="isRegistrationSuccess" class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-green-800">{{ successMessage }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-red-800">{{ errorMessage }}</p>
+          </div>
+        </div>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="registerSubmit()" method="POST" class="space-y-6" [class.opacity-50]="isLoading">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="firstName" class="block text-sm font-semibold text-gray-700 mb-2">First name</label>
+            <div class="relative">
+              <input id="firstName" type="text" name="firstName" required autocomplete="given-name"
+                [class]="'block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset transition-all duration-200 ' + 
+                  (isFieldInvalid('FirstName') ? 'ring-red-300 focus:ring-red-600' : 
+                   isFieldValid('FirstName') ? 'ring-green-300 focus:ring-green-600' : 
+                   'ring-gray-300 focus:ring-indigo-600')"
+                placeholder="First name" formControlName="FirstName" />
+              <!-- Success Icon -->
+              <div *ngIf="isFieldValid('FirstName')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <svg class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <!-- Error Icon -->
+              <div *ngIf="isFieldInvalid('FirstName')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+              </div>
+            </div>
+            <!-- Error Message -->
+            <p *ngIf="isFieldInvalid('FirstName')" class="mt-1 text-sm text-red-600">{{ getFieldError('FirstName') }}</p>
+          </div>
+          <div>
+            <label for="lastName" class="block text-sm font-semibold text-gray-700 mb-2">Last name</label>
+            <div class="relative">
+              <input id="lastName" type="text" name="lastName" required autocomplete="family-name"
+                [class]="'block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset transition-all duration-200 ' + 
+                  (isFieldInvalid('LastName') ? 'ring-red-300 focus:ring-red-600' : 
+                   isFieldValid('LastName') ? 'ring-green-300 focus:ring-green-600' : 
+                   'ring-gray-300 focus:ring-indigo-600')"
+                placeholder="Last name" formControlName="LastName" />
+              <!-- Success Icon -->
+              <div *ngIf="isFieldValid('LastName')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <svg class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <!-- Error Icon -->
+              <div *ngIf="isFieldInvalid('LastName')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                </svg>
+              </div>
+            </div>
+            <!-- Error Message -->
+            <p *ngIf="isFieldInvalid('LastName')" class="mt-1 text-sm text-red-600">{{ getFieldError('LastName') }}</p>
+          </div>
+        </div>
+
+        <div>
+          <label for="UserName" class="block text-sm font-semibold text-gray-700 mb-2">User Name</label>
+          <div class="relative">
+            <input id="text" type="text" name="text" required autocomplete="text"
+              [class]="'block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset transition-all duration-200 ' + 
+                (isFieldInvalid('UserName') ? 'ring-red-300 focus:ring-red-600' : 
+                 isFieldValid('UserName') ? 'ring-green-300 focus:ring-green-600' : 
+                 'ring-gray-300 focus:ring-indigo-600')"
+              placeholder="Enter your UserName" formControlName="UserName" />
+            <!-- Success Icon -->
+            <div *ngIf="isFieldValid('UserName')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <svg class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <!-- Error Icon -->
+            <div *ngIf="isFieldInvalid('UserName')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          <!-- Error Message -->
+          <p *ngIf="isFieldInvalid('UserName')" class="mt-1 text-sm text-red-600">{{ getFieldError('UserName') }}</p>
+        </div>
+
+        <div>
+          <label for="PhoneNumber" class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+          <div class="relative">
+            <input id="text" type="text" name="text" required autocomplete="text"
+              [class]="'block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset transition-all duration-200 ' + 
+                (isFieldInvalid('PhoneNumber') ? 'ring-red-300 focus:ring-red-600' : 
+                 isFieldValid('PhoneNumber') ? 'ring-green-300 focus:ring-green-600' : 
+                 'ring-gray-300 focus:ring-indigo-600')"
+              placeholder="Enter your Phone Number" formControlName="PhoneNumber" />
+            <!-- Success Icon -->
+            <div *ngIf="isFieldValid('PhoneNumber')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <svg class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <!-- Error Icon -->
+            <div *ngIf="isFieldInvalid('PhoneNumber')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          <!-- Error Message -->
+          <p *ngIf="isFieldInvalid('PhoneNumber')" class="mt-1 text-sm text-red-600">{{ getFieldError('PhoneNumber') }}</p>
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email address</label>
+          <div class="relative">
+            <input id="email" type="email" name="email" required autocomplete="email"
+              [class]="'block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset transition-all duration-200 ' + 
+                (isFieldInvalid('Email') ? 'ring-red-300 focus:ring-red-600' : 
+                 isFieldValid('Email') ? 'ring-green-300 focus:ring-green-600' : 
+                 'ring-gray-300 focus:ring-indigo-600')"
+              placeholder="Enter your email" formControlName="Email" />
+            <!-- Success Icon -->
+            <div *ngIf="isFieldValid('Email')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <svg class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <!-- Error Icon -->
+            <div *ngIf="isFieldInvalid('Email')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          <!-- Error Message -->
+          <p *ngIf="isFieldInvalid('Email')" class="mt-1 text-sm text-red-600">{{ getFieldError('Email') }}</p>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+          <div class="relative">
+            <input id="password" type="password" name="password" required autocomplete="new-password"
+              [class]="'block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset transition-all duration-200 ' + 
+                (isFieldInvalid('Password') ? 'ring-red-300 focus:ring-red-600' : 
+                 isFieldValid('Password') ? 'ring-green-300 focus:ring-green-600' : 
+                 'ring-gray-300 focus:ring-indigo-600')"
+              placeholder="Create a password" formControlName="Password" />
+            <!-- Success Icon -->
+            <div *ngIf="isFieldValid('Password')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <svg class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <!-- Error Icon -->
+            <div *ngIf="isFieldInvalid('Password')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          <!-- Error Message -->
+          <p *ngIf="isFieldInvalid('Password')" class="mt-1 text-sm text-red-600">{{ getFieldError('Password') }}</p>
+        </div>
+
+        <div>
+          <label for="confirmPassword" class="block text-sm font-semibold text-gray-700 mb-2">Confirm password</label>
+          <div class="relative">
+            <input id="confirmPassword" type="password" name="confirmPassword" required autocomplete="new-password"
+              [class]="'block w-full rounded-xl border-0 py-3 px-4 text-gray-900 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset transition-all duration-200 ' + 
+                (isFieldInvalid('rePassword') ? 'ring-red-300 focus:ring-red-600' : 
+                 isFieldValid('rePassword') ? 'ring-green-300 focus:ring-green-600' : 
+                 'ring-gray-300 focus:ring-indigo-600')"
+              placeholder="Confirm your password" formControlName="rePassword" />
+            <!-- Success Icon -->
+            <div *ngIf="isFieldValid('rePassword')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <svg class="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            <!-- Error Icon -->
+            <div *ngIf="isFieldInvalid('rePassword')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+              <svg class="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          <!-- Error Message -->
+          <p *ngIf="isFieldInvalid('rePassword')" class="mt-1 text-sm text-red-600">{{ getFieldError('rePassword') }}</p>
+        </div>
+
+        <div class="flex items-center">
+          <input id="agree-terms" name="agree-terms" type="checkbox" required
+            class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+          <label for="agree-terms" class="ml-3 block text-sm text-gray-700">
+            I agree to the
+            <a href="#" class="text-indigo-600 hover:text-indigo-500 font-semibold">Terms of Service</a>
+            and
+            <a href="#" class="text-indigo-600 hover:text-indigo-500 font-semibold">Privacy Policy</a>
+          </label>
+        </div>
+
+        <div>
+          <button type="submit" [disabled]="isLoading || registerForm.invalid"
+            class="flex w-full justify-center rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            [class]="isLoading ? 'bg-gray-500' : 'bg-black hover:bg-gray-800 focus-visible:outline-black'">
+            <span *ngIf="!isLoading">Create account</span>
+            <span *ngIf="isLoading" class="flex items-center">
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Creating account...
+            </span>
+          </button>
+        </div>
+      </form>
+
+      <div class="mt-6">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="bg-white px-2 text-gray-500">Or continue with</span>
+          </div>
+        </div>
+
+        <div class="mt-6 grid grid-cols-2 gap-3">
+          <button type="button"
+            class="flex w-full justify-center rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 transition-colors duration-200">
+            <svg class="h-5 w-5" viewBox="0 0 24 24">
+              <path fill="currentColor"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+            </svg>
+          </button>
+          <button type="button"
+            class="flex w-full justify-center rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 transition-colors duration-200">
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <p class="mt-6 text-center text-sm text-gray-600">
+        Already have an account?
+        <a (click)="goToLogin()" class="font-semibold text-indigo-600 hover:text-indigo-500 transition-colors duration-200 cursor-pointer">Sign in</a>
+      </p>
+    </div>
+  </div>
+</div>

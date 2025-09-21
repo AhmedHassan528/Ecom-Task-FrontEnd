@@ -1,0 +1,62 @@
+<div class="users-container">
+  <div class="header">
+    <h2>All Users</h2>
+    <button class="refresh-btn" (click)="refreshUsers()" [disabled]="loading">
+      <i class="refresh-icon">🔄</i>
+      Refresh
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading users...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <div class="error-message">
+      <i class="error-icon">⚠️</i>
+      {{ error }}
+    </div>
+    <button class="retry-btn" (click)="refreshUsers()">Try Again</button>
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="successMessage && !loading" class="success-container">
+    <div class="success-message">
+      <i class="success-icon">✅</i>
+      {{ successMessage }}
+    </div>
+  </div>
+
+  <!-- Users Table -->
+  <div *ngIf="!loading && !error" class="users-content">
+    <div *ngIf="users.length === 0" class="no-users">
+      <i class="no-data-icon">👥</i>
+      <p>No users found</p>
+    </div>
+
+    <div *ngIf="users.length > 0" class="table-container">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users; let i = index" [class.even]="i % 2 === 0">
+            <td>{{ user.id || user.userId || '-' }}</td>
+            <td>{{ user.name || user.fullName || user.firstName + ' ' + user.lastName || '-' }}</td>
+            <td>{{ user.email || '-' }}</td>
+            <td>{{ user.phone || user.phoneNumber || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
